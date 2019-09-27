@@ -8,6 +8,8 @@ import br.com.alura.forum.modelo.Curso;
 
 public interface CursoRepository extends JpaRepository<Curso, Long> {
 
-	List<Curso> findByNome(String nomeCurso);
+	// List<Curso> findByNome(String nomeCurso);
+	
+	Curso findByNome(String nomeCurso);
 	
 }

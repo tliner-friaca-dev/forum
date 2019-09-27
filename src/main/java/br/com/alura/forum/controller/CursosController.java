@@ -22,10 +22,11 @@ public class CursosController {
 		if (nomeCurso == null) {
 			List<Curso> cursos = cursoRepository.findAll();
 			return CursoDto.converter(cursos);
-		}else {
-			List<Curso> cursos = cursoRepository.findByNome(nomeCurso);
-			return CursoDto.converter(cursos);
-		}
+		}//else {
+			//List<Curso> cursos = cursoRepository.findByNome(nomeCurso);
+			//return CursoDto.converter(cursos);
+		//}
+		return null;
 	}
 	
 
