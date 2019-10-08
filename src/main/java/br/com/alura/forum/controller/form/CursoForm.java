@@ -5,12 +5,15 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+import br.com.alura.forum.modelo.Curso;
+import br.com.alura.forum.repository.CursoRepository;
+
 public class CursoForm {
 	
-	@NotNull @NotEmpty @Length(min = 10)
+	@NotNull @NotEmpty @Length(min = 5)
 	private String nome;
 	
-	@NotNull @NotEmpty @Length(min = 20)
+	@NotNull @NotEmpty @Length(min = 5)
 	private String categoria;
 
 	public String getNome() {
@@ -27,6 +30,11 @@ public class CursoForm {
 
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
+	}
+	
+	public Curso converter(CursoRepository cursoRepository) {
+		// Curso curso = cursoRepository.findByNome(nome);
+		return new Curso(nome, categoria);
 	}
 
 }
