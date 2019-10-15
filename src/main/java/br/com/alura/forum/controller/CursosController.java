@@ -2,6 +2,7 @@ package br.com.alura.forum.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -47,6 +48,7 @@ public class CursosController {
 	}
 	
 	@PostMapping
+	@Transactional
 	public ResponseEntity<CursoDto> cadastrar(@RequestBody @Valid CursoForm cursoForm, UriComponentsBuilder uriBuilder){
 		Curso curso = cursoForm.converter(cursoRepository);
 		cursoRepository.save(curso);
@@ -57,23 +59,34 @@ public class CursosController {
 	}
 	
 	@GetMapping("/{id}")
-	public DetalhesDoCursoDto detalhar(@PathVariable Long id) {
-		Curso curso = cursoRepository.getOne(id);
-		
-		return new DetalhesDoCursoDto(curso);
+	public ResponseEntity<DetalhesDoCursoDto> detalhar(@PathVariable Long id) {
+		Optional<Curso> curso = cursoRepository.findById(id);
+		if (curso.isPresent()) {
+			return ResponseEntity.ok(new DetalhesDoCursoDto(curso.get()));
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<CursoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoCursoForm form){
-		Curso curso = form.atualizar(id, cursoRepository);
-		return ResponseEntity.ok(new CursoDto(curso));
+		Optional<Curso> cursoOptional = cursoRepository.findById(id);
+		if (cursoOptional.isPresent()) {
+			Curso curso = form.atualizar(id, cursoRepository);
+			return ResponseEntity.ok(new CursoDto(curso));
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping("/{id}")
+	@Transactional
 	public ResponseEntity<?> remover(@PathVariable Long id){
-		cursoRepository.deleteById(id);
-		return ResponseEntity.ok().build(); 
+		Optional<Curso> cursoOptional = cursoRepository.findById(id);
+		if (cursoOptional.isPresent()) {
+			cursoRepository.deleteById(id);
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
 	}
 
 }
