@@ -20,13 +20,7 @@ import br.com.alura.forum.repository.UsuarioRepository;
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-	private TokenService tokenService;
-	
-	@Autowired
 	private AutenticacaoService autenticacaoService;
-	
-	@Autowired
-	private UsuarioRepository usuarioRepository;
 	
 	//Configuracoes de autenticacao
 	@Override
@@ -42,9 +36,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/topicos/*").permitAll()
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
 		.anyRequest().authenticated()
-		.and().csrf().disable();
-		//.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		//.and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
+		.and().csrf().disable()
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	
 	
